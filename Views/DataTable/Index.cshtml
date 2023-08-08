@@ -1,0 +1,80 @@
+﻿@model Calender_TestCase.Models.CombinedModels
+
+<h2>Meeting Schedule</h2>
+
+
+<div>
+    @Html.DropDownList("meetingFilter", (SelectList)ViewBag.AllMeetingDetails, "All Meetings", new { onchange = "filterTableByMeeting()" })
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            @foreach (var date in Model.Dates)
+            {
+                <th>@date.ToString("yyyy-MM-dd")</th>
+            }                                                                                           
+        </tr>
+    </thead>
+    <tbody>
+
+        @for (int i = 0; i < Model.MeetingDetails.Max(x => x.Count); i++)
+        {
+            <tr>
+                @foreach (var meetingList in Model.MeetingDetails)
+                {
+                    if (i < meetingList.Count)
+                    {
+                        <td>
+                            <p>@meetingList[i]</p>
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                }
+            </tr>
+        }
+@*
+        <tbody>
+
+        <tr>
+        @foreach (var meetingList in Model.MeetingDetails)
+        {
+        <td>
+        @foreach (var meeting in meetingList)
+        {
+        <p>@meeting</p>
+        }
+        </td>
+        }
+        </tr>
+
+        </tbody>
+*@
+    </tbody>
+</table>
+
+
+
+
+
+@section Scripts{
+    <script>
+        function filterTableByMeeting(){
+            var selectedmeeting = $("#meetingFilter").val();
+            $.ajax({
+                url: "/DataTable/FilterTableByMeeting",
+                type:"POST",
+                data:{meeting:selectedmeeting},
+                success:function(data){
+                    $("#meetingDetailsTable").html(data);
+                },
+                error: function(){
+                    alert("Error occurred while filtering the table.");
+                }
+            });
+        }
+    </script>
+}

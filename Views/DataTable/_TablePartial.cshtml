@@ -1,0 +1,43 @@
+﻿
+
+<div id="meetingDetailsTable">
+    <table class="table">
+        <thead>
+            <tr>
+                @foreach (var date in Model.Dates)
+                {
+                    <th>@date.ToString("yyyy-MM-dd")</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int maxCount = 0;
+                foreach(var data in Model.MeetingDetails)
+                {
+                    maxCount++;
+                }
+            }
+            @for (int i = 0; i < maxCount; i++)
+            {
+                <tr>
+                    @foreach (var meetingList in Model.MeetingDetails)
+                    {
+                        if (i < meetingList.Count)
+                        {
+                            <td>
+                                <p>@meetingList[i]</p>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    }
+                </tr>
+            }
+
+
+        </tbody>
+    </table>
+</div>
